@@ -1,0 +1,130 @@
+fail_fast: false
+
+default_language_version:
+  python: python3.13
+
+default_install_hook_types: [pre-commit, pre-push]
+
+exclude: |
+  (?x)^(
+    \.git/|
+    \.venv/|
+    \.ruff_cache/|
+    \.pytest_cache/|
+    __pycache__/|
+    uv\.lock|
+    site/
+  )
+
+repos:
+  # === FAST: file integrity ===
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=2000"]
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: check-toml
+      - id: check-yaml
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+      - id: trailing-whitespace
+
+  # === FAST: secrets ===
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  # === FAST: python ===
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.5
+    hooks:
+      - id: ruff-check
+        args: ["--fix"]
+      - id: ruff-format
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.21.2
+    hooks:
+      - id: pyupgrade
+        args: ["--py313-plus"]
+
+  # === FAST: config, docs, shell ===
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.49.1
+    hooks:
+      - id: markdownlint
+        files: \.md$
+        args: ["--fix", "--config", ".markdownlint.json"]
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+        args: ["--strict"]
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+        args: ["--severity=warning"]
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.3
+    hooks:
+      - id: codespell
+        additional_dependencies: [tomli]
+
+  # === FAST: uv hygiene ===
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.12.7
+    hooks:
+      - id: uv-lock
+
+  - repo: https://github.com/ninoseki/uv-sort
+    rev: v0.8.0
+    hooks:
+      - id: uv-sort
+
+  # === MEDIUM: types ===
+  - repo: local
+    hooks:
+      - id: ty
+        name: ty typecheck
+        entry: uv run ty check
+        language: system
+        pass_filenames: false
+        types: [python]
+
+  # === SLOW: pre-push only ===
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: uv run pytest
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+        types: [python]
+
+      - id: mkdocs-build
+        name: mkdocs build (strict)
+        entry: uv run mkdocs build --strict --site-dir /tmp/core-docs-check
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+        files: ^(docs/|mkdocs\.yml$)

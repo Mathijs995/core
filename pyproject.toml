@@ -1,0 +1,80 @@
+[project]
+name = "core"
+version = "0.1.0"
+description = "Personal skills and automation toolkit."
+readme = "README.md"
+requires-python = ">=3.13,<4.0"
+authors = [{ name = "Mathijs de Jong" }]
+dependencies = ["typer>=0.21.1,<1.0.0"]
+
+[project.scripts]
+core = "core.cli:main"
+
+[dependency-groups]
+dev = [
+    "prek>=0.4.3",
+    "pytest-cov>=7.0.0",
+    "pytest>=9.0.3,<10.0.0",
+    "ruff>=0.14.2",
+    "ty>=0.0.1a20",
+]
+docs = ["mkdocs-material>=9.7.6,<10.0.0", "mkdocs>=1.6.1,<2.0.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/core"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers --strict-config"
+
+[tool.coverage.run]
+source = ["src/core"]
+
+[tool.ruff]
+target-version = "py313"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "A",   # flake8-builtins
+    "ANN", # flake8-annotations
+    "ARG", # flake8-unused-arguments
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "D",   # pydocstyle
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "PL",  # pylint
+    "PTH", # flake8-use-pathlib
+    "RET", # flake8-return
+    "RUF", # ruff-specific
+    "S",   # flake8-bandit
+    "SIM", # flake8-simplify
+    "T20", # flake8-print
+    "TID", # flake8-tidy-imports
+    "UP",  # pyupgrade
+    "W",   # pycodestyle warnings
+]
+ignore = [
+    "D203", # incompatible with D211
+    "D213", # incompatible with D212
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "S101",   # asserts are the point of a test
+    "D103",   # test names document themselves
+    "PLR2004",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ty.src]
+include = ["src", "tests"]

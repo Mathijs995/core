@@ -1,0 +1,17 @@
+extends: default
+
+rules:
+  # Formatters and generated CI files routinely exceed 80 columns.
+  line-length:
+    max: 120
+    level: warning
+  # `on:` in GitHub workflows is a YAML 1.1 boolean; this is not a mistake.
+  truthy:
+    check-keys: false
+  comments:
+    min-spaces-from-content: 1
+  document-start: disable
+
+ignore: |
+  .venv/
+  site/

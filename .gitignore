@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Docs build
+site/
+
+# Playwright MCP scratch output
+.playwright-mcp/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Claude Code local overrides (settings.json is tracked)
+.claude/settings.local.json
