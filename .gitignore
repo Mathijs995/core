@@ -19,5 +19,5 @@ site/
 .idea/
 .vscode/
 
-# Claude Code local overrides (settings.json is tracked)
+# Claude Code machine-local overrides; .claude/skills/ stays tracked
 .claude/settings.local.json

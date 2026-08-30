@@ -1,8 +1,13 @@
 # core
 
+[![CI](https://github.com/Mathijs995/core/actions/workflows/ci.yml/badge.svg)](https://github.com/Mathijs995/core/actions/workflows/ci.yml)
+[![Docs](https://github.com/Mathijs995/core/actions/workflows/docs.yml/badge.svg)](https://mathijs995.github.io/core/)
+
 Personal skills and automation toolkit — the source of truth for the
 [Claude Code](https://claude.com/claude-code) skills I use every day, plus the
 small CLI that installs them.
+
+Documentation: <https://mathijs995.github.io/core/>
 
 ## Why this exists
 
