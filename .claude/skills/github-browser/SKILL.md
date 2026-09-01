@@ -77,8 +77,13 @@ that only they can complete.
 
 4. Verify before submitting — read back `.value` for both fields and confirm
    `#draft_on` is unchecked unless a draft is wanted.
-5. Click `button[type="submit"].hx_create-pr-button`. The page navigates to
-   `/<owner>/<repo>/pull/<n>` on success.
+5. Click `button[type="submit"].hx_create-pr-button`, then read `location.href` to get
+   the new `/<owner>/<repo>/pull/<n>`.
+
+   The click often reports `TimeoutError: … waiting for scheduled navigations to
+   finish` while having worked perfectly well — GitHub keeps background requests open
+   past the navigation. **Never retry the click on a timeout**; that opens a second,
+   duplicate PR. Check the URL first, and only retry if it is still `/compare/`.
 
 ### Check status before merging
 
@@ -133,6 +138,9 @@ Navigate to `/<owner>/<repo>/pulls?q=is%3Apr` (add `is%3Aopen` to filter). Rows 
 - **Two buttons read "Create pull request"** on the compare page: a `js-details-target`
   dropdown toggle and the real `type="submit"`. Matching on text alone is a Playwright
   strict-mode violation that fails the call.
+- **A click that times out may still have succeeded.** Submitting the PR form regularly
+  raises a navigation timeout after the click has gone through. Always confirm with
+  `location.href` before reacting — retrying creates a duplicate PR.
 - **GitHub's newer PR UI uses hashed class names** (`prc-Button-ButtonBase-9n-Xk`,
   `MergeStatusButton-module__…`). Never anchor on those — they change per deploy. Use
   role + accessible name, or the stable semantic classes in the table above.
