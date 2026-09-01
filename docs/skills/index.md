@@ -10,6 +10,7 @@ than summaries.
 | [`slack-browser`](browser-automation.md) | Read Slack, triage unreads, draft replies |
 | [`outlook-browser`](browser-automation.md) | Read and triage Outlook mail, draft replies |
 | [`whatsapp-browser`](browser-automation.md) | Read WhatsApp chats, draft replies |
+| [`trello-browser`](browser-automation.md) | Read and update the Trello task board |
 | [`gh-create-pr`](gh-create-pr.md) | Open pull requests with the `gh` CLI |
 
 ## Writing a new skill
