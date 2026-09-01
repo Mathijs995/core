@@ -130,7 +130,7 @@ Navigate to `/<owner>/<repo>/pulls?q=is%3Apr` (add `is%3Aopen` to filter). Rows 
 | Create PR submit | `button[type="submit"].hx_create-pr-button` |
 | Merge button | `button.flex-1:has-text("Merge pull request")` |
 | Confirm merge | button with accessible name `Confirm merge` |
-| Merge-box status rows | `.merge-status-item` |
+| Check results | none — read them from rendered text (see `pr-status.js`) |
 | PR list row | `.js-issue-row` |
 
 ## Gotchas
@@ -144,6 +144,10 @@ Navigate to `/<owner>/<repo>/pulls?q=is%3Apr` (add `is%3Aopen` to filter). Rows 
 - **GitHub's newer PR UI uses hashed class names** (`prc-Button-ButtonBase-9n-Xk`,
   `MergeStatusButton-module__…`). Never anchor on those — they change per deploy. Use
   role + accessible name, or the stable semantic classes in the table above.
+- **There is no usable selector for check results.** The old `.merge-status-item` rows
+  are gone from the current UI and the replacements are hashed, so `pr-status.js` reads
+  the rendered text instead. Lines look like `CI / check (pull_request)Successful in
+  53s` — with no separator before the outcome.
 - **`browser_click` and `browser_fill_form` on these MCP servers take `target`** (a CSS
   selector or ref string), not the `element` + `ref` pair. Passing `ref` fails with
   `expected string, received undefined → at target`.

@@ -1,15 +1,20 @@
 // GitHub PR status — run via Playwright MCP browser_evaluate (paste as `function`)
 // while on a /<owner>/<repo>/pull/<n> page. Reports whether the PR is safe to merge.
-// Verified against Mathijs995/core PR #1, Sep 2026.
+// Verified against Mathijs995/core PRs #1 (merged) and #2 (open, green), Sep 2026.
 () => {
   const txt = document.body.innerText;
   const has = (re) => re.test(txt);
 
-  // Merge-box rows carry one line per check: name, then outcome ("Successful in 59s").
-  // Empty once the PR is merged — the whole merge box is removed, so trust `state` then.
-  const checks = [...document.querySelectorAll('.merge-status-item')]
-    .map((e) => e.innerText.replace(/\s*\n+\s*/g, ' — ').trim())
-    .filter(Boolean);
+  // Read checks from rendered text, not selectors: the current PR UI wraps them in
+  // hashed module classes that change per deploy, and the old `.merge-status-item`
+  // rows no longer render. Each line looks like "CI / check (pull_request)Successful
+  // in 53s". Empty once merged — the merge box is gone, so trust `state` then.
+  const OUTCOME =
+    /(Successful in|Failing after|Cancelled|Skipped|Queued|In progress|Waiting for status|Expected)/;
+  const checks = txt
+    .split('\n')
+    .map((l) => l.trim())
+    .filter((l) => OUTCOME.test(l) && l.length < 120);
 
   // The heading carries a screen-reader-only "- #<n>" suffix; drop it rather than
   // matching a class name, which GitHub rotates.
