@@ -8,6 +8,13 @@ description: Use when reading BCG Outlook email, triaging the inbox, or drafting
 Read email, triage the inbox, and draft replies in BCG's Outlook Web
 (`https://outlook.office.com/mail/`) using the Playwright MCP tools.
 
+**Use the `pw-bcg` server — `mcp__pw-bcg__browser_*`.** It owns the profile at
+`~/pw-profiles/bcg`, which is the one signed into `dejong.mathijs@bcg.com`. The
+personal Google account lives in `pw-personal`; the unscoped
+`mcp__plugin_playwright_playwright__*` tools are a third, unrelated profile.
+Two servers cannot share a profile directory — if you see "Browser is already
+in use", you are on the wrong server, not looking at a stale lock.
+
 **Core principles:**
 
 1. **Triage from the list, don't open.** Each inbox row's `aria-label` already holds

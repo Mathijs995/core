@@ -18,7 +18,7 @@ file and use `--body-file`.
 - `gh auth status` shows an authenticated account **for the repo's host account**
   (check this — a machine can hold several logins, and the active one may not own
   the target repo).
-- Changes committed on a non-protected branch. If on `main`/`master`, branch first:
+- Changes committed on a non-protected branch. If on `main`/`master`/`dev`/etc., branch first:
   `git checkout -b <type>/<short-description>`.
 
 ## Workflow
