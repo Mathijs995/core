@@ -5,10 +5,15 @@
   const txt = document.body.innerText;
   const has = (re) => re.test(txt);
 
-  // Read checks from rendered text, not selectors: the current PR UI wraps them in
+  // Checks come from rendered text, not selectors: the current PR UI wraps them in
   // hashed module classes that change per deploy, and the old `.merge-status-item`
-  // rows no longer render. Each line looks like "CI / check (pull_request)Successful
-  // in 53s". Empty once merged — the merge box is gone, so trust `state` then.
+  // rows no longer render at all.
+  //
+  // `summary` ("1 successful check") is always present when the merge box is. The
+  // per-check detail lines ("CI / check (pull_request)Successful in 53s") sit behind a
+  // collapsed section and are often absent — treat `checks` as a bonus and decide from
+  // the booleans. Both are empty once merged, since the merge box is removed.
+  const summary = txt.match(/\d+ (?:successful|pending|failing|skipped)[^\n]*/g) || [];
   const OUTCOME =
     /(Successful in|Failing after|Cancelled|Skipped|Queued|In progress|Waiting for status|Expected)/;
   const checks = txt
@@ -35,6 +40,7 @@
     failing: has(/checks were not successful|Some checks failed/i),
     conflict: has(/can[’']t automatically merge|This branch has conflicts/i),
     readyToMerge: has(/Ready to merge/i),
+    summary,
     checks,
   };
 }

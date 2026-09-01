@@ -88,7 +88,11 @@ that only they can complete.
 ### Check status before merging
 
 Run `pr-status.js` via `browser_evaluate` (paste file contents as `function`) on the PR
-page. Returns the merge state, whether checks passed, and each check with its outcome.
+page. Returns the merge state plus `allPassed` / `pending` / `failing` / `conflict`.
+
+**Decide from those booleans and `summary`** ("1 successful check"), which always
+render. The per-check `checks` detail sits behind a collapsed section and is frequently
+absent — its being empty says nothing about whether checks passed.
 
 Wait for CI rather than merging straight after creating — checks take ~60s here and the
 merge box reports "Some checks haven't completed yet" until they land.
@@ -146,8 +150,10 @@ Navigate to `/<owner>/<repo>/pulls?q=is%3Apr` (add `is%3Aopen` to filter). Rows 
   role + accessible name, or the stable semantic classes in the table above.
 - **There is no usable selector for check results.** The old `.merge-status-item` rows
   are gone from the current UI and the replacements are hashed, so `pr-status.js` reads
-  the rendered text instead. Lines look like `CI / check (pull_request)Successful in
-  53s` — with no separator before the outcome.
+  the rendered text instead. Even then, the per-check line (`CI / check
+  (pull_request)Successful in 53s` — note the missing separator) usually is not in the
+  DOM on load, while `All checks have passed` and `1 successful check` reliably are.
+  **An empty `checks` array is not a failing or missing check.**
 - **`browser_click` and `browser_fill_form` on these MCP servers take `target`** (a CSS
   selector or ref string), not the `element` + `ref` pair. Passing `ref` fails with
   `expected string, received undefined → at target`.
