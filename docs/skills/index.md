@@ -11,6 +11,7 @@ than summaries.
 | [`outlook-browser`](browser-automation.md) | Read and triage Outlook mail, draft replies |
 | [`whatsapp-browser`](browser-automation.md) | Read WhatsApp chats, draft replies |
 | [`trello-browser`](browser-automation.md) | Read and update the Trello task board |
+| [`github-browser`](browser-automation.md) | Open and merge PRs when the `gh` CLI is blocked |
 | [`gh-create-pr`](gh-create-pr.md) | Open pull requests with the `gh` CLI |
 
 ## Writing a new skill

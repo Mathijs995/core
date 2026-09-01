@@ -25,13 +25,20 @@ is edited in exactly one place.
 | [`outlook-browser`](.claude/skills/outlook-browser/) | Read and triage Outlook mail, draft replies via Playwright |
 | [`whatsapp-browser`](.claude/skills/whatsapp-browser/) | Read WhatsApp chats and draft replies via Playwright |
 | [`trello-browser`](.claude/skills/trello-browser/) | Read and update the Trello task board via Playwright |
+| [`github-browser`](.claude/skills/github-browser/) | Open and merge PRs on personal repos when the `gh` CLI is blocked |
 | [`gh-create-pr`](.claude/skills/gh-create-pr/) | Open pull requests with `gh` using the safe body-file workflow |
 
 The three messaging skills share a deliberate safety property: **they draft, they don't
 send.** Sending happens only when you explicitly ask for it in the same request, and
 only by clicking the app's real send button — never by a keystroke that could fire
 early. `trello-browser` draws the same line one step further in: it will create, move,
-and comment on cards freely, but archiving and deleting need an explicit ask.
+and comment on cards freely, but archiving and deleting need an explicit ask, and
+`github-browser` will open a PR on request but merges only when told to.
+
+`github-browser` exists for a narrower reason than the rest: `gh` on this machine
+resolves to a BCG Enterprise Managed User, which GitHub walls off from personal repos
+entirely. Prefer `gh-create-pr` wherever the CLI works, and fall back to the browser
+only for `Mathijs995`-owned repos.
 
 Every browser skill's selectors and endpoints were verified against the live app rather
 than guessed.

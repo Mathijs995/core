@@ -107,7 +107,14 @@ that.
 | --- | --- |
 | `gh` not authenticated | `gh auth login` (verify the *active* account owns the repo) |
 | Wrong account active | `gh auth switch` |
+| `Enterprise Managed User, you cannot access this content` | Personal repo — `gh` cannot do this at all. Use the `github-browser` skill |
 | Branch not on remote | `git push -u origin HEAD` |
 | PR already exists | `gh pr list --head "$(git branch --show-current)"` |
 | Base branch guessed wrong | Pass `--base` explicitly |
 | Body renders mangled | You interpolated it into a shell arg — use `--body-file` |
+
+**On a personal (`Mathijs995`) repo this skill cannot work.** `gh` resolves to a BCG
+Enterprise Managed User, which is walled off from non-enterprise content, and
+`GITHUB_TOKEN` in the environment makes `gh auth switch` a no-op. Don't burn turns on
+it — `git push` still works over SSH, so push the branch and switch to the
+`github-browser` skill for the PR itself.
