@@ -1,5 +1,5 @@
 ---
-name: vagaro-browser
+name: haircut-appointment-browser
 description: Use when booking, rescheduling, or checking a Vagaro appointment via the browser — haircut, barber, salon, or spa bookings on vagaro.com — including "book me a haircut", "what times are free Saturday", "book the 10am slot", or any task touching vagaro.com with Playwright.
 ---
 
